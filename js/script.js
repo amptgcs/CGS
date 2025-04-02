@@ -42,8 +42,33 @@ class Timer {
     }
 }
 
+// Normative values for gait speed by age and gender
+const maleNormativeValues = {
+    '20-29': 4.46,
+    '30-39': 4.7,
+    '40-49': 4.7,
+    '50-59': 4.7,
+    '60-69': 4.39,
+    '70-79': 4.14,
+    '80-89': 3.18,
+    '90-99': 3.18,
+    '100': 2.1
+};
+
+const femaleNormativeValues = {
+    '20-29': 4.4,
+    '30-39': 4.39,
+    '40-49': 4.56,
+    '50-59': 4.31,
+    '60-69': 4.07,
+    '70-79': 3.71,
+    '80-89': 3.09,
+    '90-99': 3.09,
+    '100': 2.1
+};
+
 // Calculation functions
-function calculateGaitMetrics(distance, time, steps) {
+function calculateGaitMetrics(distance, time, steps, ageCategory, gender) {
     // Validate inputs
     if (distance <= 0 || time <= 0 || steps <= 0) {
         throw new Error('All values must be greater than zero');
@@ -54,10 +79,21 @@ function calculateGaitMetrics(distance, time, steps) {
     const stepLength = distance / steps; // feet per step
     const cadence = (60 / time) * steps; // steps per minute
     
+    // Calculate percent disability
+    let percentDisability = 0;
+    const normativeValues = gender === 'male' ? maleNormativeValues : femaleNormativeValues;
+    
+    if (normativeValues[ageCategory]) {
+        percentDisability = 1 - (gaitSpeed / normativeValues[ageCategory]);
+        // Ensure disability percentage is not negative (if person is faster than normative value)
+        percentDisability = Math.max(0, percentDisability);
+    }
+    
     return {
         gaitSpeed: parseFloat(gaitSpeed.toFixed(2)),
         stepLength: parseFloat(stepLength.toFixed(2)),
-        cadence: Math.ceil(cadence) // Round up to nearest integer
+        cadence: Math.ceil(cadence), // Round up to nearest integer
+        percentDisability: parseFloat((percentDisability * 100).toFixed(1)) // Convert to percentage with 1 decimal place
     };
 }
 
@@ -111,9 +147,29 @@ document.addEventListener('DOMContentLoaded', function() {
             const distance = parseFloat(document.getElementById('distance').value);
             const time = parseFloat(document.getElementById('time').value);
             const steps = parseInt(document.getElementById('steps').value);
+            const ageCategory = document.getElementById('age_category').value;
+            
+            // Get selected gender
+            const genderRadios = document.getElementsByName('gender');
+            let gender = '';
+            for (const radio of genderRadios) {
+                if (radio.checked) {
+                    gender = radio.value;
+                    break;
+                }
+            }
+            
+            // Validate age and gender selection
+            if (!ageCategory) {
+                throw new Error('Please select an age category');
+            }
+            
+            if (!gender) {
+                throw new Error('Please select a gender');
+            }
             
             // Calculate metrics
-            const results = calculateGaitMetrics(distance, time, steps);
+            const results = calculateGaitMetrics(distance, time, steps, ageCategory, gender);
             
             // Display results
             displayResults(results);
@@ -131,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('gait-speed-result').textContent = data.gaitSpeed + ' ft/sec';
         document.getElementById('step-length-result').textContent = data.stepLength + ' ft/step';
         document.getElementById('cadence-result').textContent = data.cadence + ' steps/min';
+        document.getElementById('disability-result').textContent = data.percentDisability + '%';
         
         // Show results section
         resultsSection.classList.remove('d-none');
