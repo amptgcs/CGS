@@ -1,0 +1,44 @@
+/* Minimal custom styles to complement Bootstrap theme */
+
+.timer-display {
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: monospace;
+    min-width: 100px;
+    text-align: center;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.results-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Enhance form accessibility */
+label {
+    margin-bottom: 0.5rem;
+}
+
+.required::after {
+    content: "*";
+    color: var(--bs-danger);
+    margin-left: 4px;
+}
