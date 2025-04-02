@@ -137,7 +137,7 @@
                 <!-- Results Section -->
                 <div id="results-section" class="mt-5 d-none">
                     <h3 class="border-bottom pb-2 mb-4">Results</h3>
-                    <div class="row g-4">
+                    <div class="row g-4 mb-4">
                         <!-- Gait Speed -->
                         <div class="col-md-4">
                             <div class="card text-center h-100">
@@ -173,6 +173,21 @@
                                 <div class="card-body d-flex flex-column justify-content-center">
                                     <div class="results-value" id="cadence-result">0.0 steps/min</div>
                                     <!--<div class="text-muted">(60 / Time) × Number of Steps</div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Percent Disability Row -->
+                    <div class="row">
+                        <div class="col-md-6 mx-auto">
+                            <div class="card text-center">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5 class="mb-0">Percent Disability</h5>
+                                </div>
+                                <div class="card-body d-flex flex-column justify-content-center py-4">
+                                    <div class="results-value" id="disability-result">0%</div>
+                                    <div class="text-muted">1 - (Gait Speed / Age-Gender Normative Value)</div>
                                 </div>
                             </div>
                         </div>
