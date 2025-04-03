@@ -93,7 +93,7 @@ function calculateGaitMetrics(distance, time, steps, ageCategory, gender) {
         gaitSpeed: parseFloat(gaitSpeed.toFixed(2)),
         stepLength: parseFloat(stepLength.toFixed(2)),
         cadence: Math.ceil(cadence), // Round up to nearest integer
-        percentDisability: parseFloat((percentDisability * 100).toFixed(1)) // Convert to percentage with 1 decimal place
+        percentDisability: Math.round(percentDisability * 100) // Convert to percentage and round to nearest integer
     };
 }
 
